@@ -4,7 +4,7 @@
   <title><![CDATA[Category: life | Where am I]]></title>
   <link href="http://chrishyx.github.com/blog/categories/life/atom.xml" rel="self"/>
   <link href="http://chrishyx.github.com/"/>
-  <updated>2013-02-02T18:44:02+08:00</updated>
+  <updated>2013-02-06T00:05:23+08:00</updated>
   <id>http://chrishyx.github.com/</id>
   <author>
     <name><![CDATA[yaxin]]></name>
@@ -19,6 +19,11 @@
     <updated>2013-02-01T00:39:00+08:00</updated>
     <id>http://chrishyx.github.com/blog/2013/02/01/hello-octopress</id>
     <content type="html"><![CDATA[<p>This is my first octopress blog!</p>
+
+<!-- more -->
+
+
+<p>曾经csdn、javaeye、oschina和自己搭建的wordpress上都陆续写过或者转载过一些博客，却一直没有坚持下来，一方面是自己的懒惰，另一面没有特别合适的方式也是个问题。这次把以前所有blog里有价值的东西整理到这儿来，以后好好耕耘这个自留地。</p>
 ]]></content>
   </entry>
   

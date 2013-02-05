@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Where am I</title>
+  <title>ubuntu下内核更新以后virtualbox的重配置 - Where am I</title>
   <meta name="author" content="yaxin">
 
   
-  <meta name="description" content="来自网络转载，留下经常看看，eclipse依然是我使用最多的IDE，只是eclipse越来越慢，让人愈发的失望。 Ctrl+1 快速修复(最经典的快捷键,就不用多说了) Ctrl+D: 删除当前行 Ctrl+Alt+↓ 复制当前行到下一行(复制增加) Ctrl+Alt+↑ 复制当前行到上一行( &hellip;">
+  <meta name="description" content="随着 Ubuntu 系统内核的更新，VirtualBox 原有的内核模块已经不再适用。于是，VirtualBox 将无法正常使用。需要重新安装 VirtualBox 吗？当然不必。我们只需重新稍加配置即可。 首先获取与当前内核版本相一致的头文件： 1
+$ sudo apt-get install &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://chrishyx.github.com/">
+  <link rel="canonical" href="http://chrishyx.github.com/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -62,64 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/02/05/eclipse-shortcuts/">Eclipse Shortcuts</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-05T23:56:00+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>来自网络转载，留下经常看看，eclipse依然是我使用最多的IDE，只是eclipse越来越慢，让人愈发的失望。</p>
-
-<p>Ctrl+1 快速修复(最经典的快捷键,就不用多说了)</p>
-
-<p>Ctrl+D: 删除当前行</p>
-
-<p>Ctrl+Alt+↓ 复制当前行到下一行(复制增加)</p>
-
-<p>Ctrl+Alt+↑ 复制当前行到上一行(复制增加)</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/05/eclipse-shortcuts/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/">Ubuntu下内核更新以后virtualbox的重配置</a></h1>
+      <h1 class="entry-title">Ubuntu下内核更新以后virtualbox的重配置</h1>
     
     
       <p class="meta">
@@ -142,7 +91,7 @@
   </header>
 
 
-  <div class="entry-content"><p>随着 Ubuntu 系统内核的更新，VirtualBox 原有的内核模块已经不再适用。于是，VirtualBox 将无法正常使用。需要重新安装 VirtualBox 吗？当然不必。我们只需重新稍加配置即可。</p>
+<div class="entry-content"><p>随着 Ubuntu 系统内核的更新，VirtualBox 原有的内核模块已经不再适用。于是，VirtualBox 将无法正常使用。需要重新安装 VirtualBox 吗？当然不必。我们只需重新稍加配置即可。</p>
 
 <p>首先获取与当前内核版本相一致的头文件：</p>
 
@@ -158,22 +107,16 @@
 
 <p>一旦编译完成，程序将会自动启动 vboxdrv 内核模块。此时，再用 VirtualBox 也就没有什么问题了。如果以后遇到内核再次重新的情况，则如法炮制即可解决。</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/02/01/hello-octopress/">Hello Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">yaxin</span></span>
+
+      
 
 
 
@@ -185,32 +128,40 @@
   
 
 
-<time datetime="2013-02-01T00:39:00+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2013</time>
-        
-      </p>
+<time datetime="2013-02-05T23:47:00+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://chrishyx.github.com/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/" data-via="" data-counturl="http://chrishyx.github.com/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/" >Tweet</a>
+  
+  
+  
+</div>
 
-
-  <div class="entry-content"><p>This is my first octopress blog!</p>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/02/01/hello-octopress/" title="Previous Post: hello octopress">&laquo; hello octopress</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/02/05/eclipse-shortcuts/" title="Next Post: eclipse shortcuts">eclipse shortcuts &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/01/hello-octopress/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -239,6 +190,7 @@
 
   
 </aside>
+
 
     </div>
   </div>

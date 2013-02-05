@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Where am I]]></title>
-  <link href="http://chrishyx.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: ide | Where am I]]></title>
+  <link href="http://chrishyx.github.com/blog/categories/ide/atom.xml" rel="self"/>
   <link href="http://chrishyx.github.com/"/>
   <updated>2013-02-06T00:05:23+08:00</updated>
   <id>http://chrishyx.github.com/</id>
@@ -245,43 +245,6 @@ line中显示没有找到了,查一个单词时,特别实用,这个功能Idea两
 <p>文本编辑器 上滚行 Ctrl+↑</p>
 
 <p>文本编辑器 下滚行 Ctrl+↓</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ubuntu下内核更新以后virtualbox的重配置]]></title>
-    <link href="http://chrishyx.github.com/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/"/>
-    <updated>2013-02-05T23:47:00+08:00</updated>
-    <id>http://chrishyx.github.com/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi</id>
-    <content type="html"><![CDATA[<p>随着 Ubuntu 系统内核的更新，VirtualBox 原有的内核模块已经不再适用。于是，VirtualBox 将无法正常使用。需要重新安装 VirtualBox 吗？当然不必。我们只需重新稍加配置即可。</p>
-
-<p>首先获取与当前内核版本相一致的头文件：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get install linux-headers-`uname -r` </span></code></pre></td></tr></table></div></figure>
-
-
-<p>接着，我们来重新编译 VirtualBox 内核模块，这可以使用下面的指令完成：</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo /etc/init.d/vboxdrv setup </span></code></pre></td></tr></table></div></figure>
-
-
-<p>一旦编译完成，程序将会自动启动 vboxdrv 内核模块。此时，再用 VirtualBox 也就没有什么问题了。如果以后遇到内核再次重新的情况，则如法炮制即可解决。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[hello octopress]]></title>
-    <link href="http://chrishyx.github.com/blog/2013/02/01/hello-octopress/"/>
-    <updated>2013-02-01T00:39:00+08:00</updated>
-    <id>http://chrishyx.github.com/blog/2013/02/01/hello-octopress</id>
-    <content type="html"><![CDATA[<p>This is my first octopress blog!</p>
-
-<!-- more -->
-
-
-<p>曾经csdn、javaeye、oschina和自己搭建的wordpress上都陆续写过或者转载过一些博客，却一直没有坚持下来，一方面是自己的懒惰，另一面没有特别合适的方式也是个问题。这次把以前所有blog里有价值的东西整理到这儿来，以后好好耕耘这个自留地。</p>
 ]]></content>
   </entry>
   
