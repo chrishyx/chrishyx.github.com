@@ -1,0 +1,8 @@
+---
+layout: post
+title: "emacs"
+date: 2013-02-27 11:07
+comments: true
+categories: ide
+---
+prelude
