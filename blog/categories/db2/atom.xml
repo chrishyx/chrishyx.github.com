@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DB2 | Where am I]]></title>
   <link href="http://chrishyx.github.com/blog/categories/db2/atom.xml" rel="self"/>
   <link href="http://chrishyx.github.com/"/>
-  <updated>2013-02-06T01:02:42+08:00</updated>
+  <updated>2013-03-24T22:05:13+08:00</updated>
   <id>http://chrishyx.github.com/</id>
   <author>
     <name><![CDATA[yaxin]]></name>
@@ -43,6 +43,51 @@
 以上内容适用于DB2 版本8以及版本9。</p>
 
 <p>longvarchar 字段在where条件中可以用like，不能用＝。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[db2 install]]></title>
+    <link href="http://chrishyx.github.com/blog/2013/02/06/db2-install/"/>
+    <updated>2013-02-06T00:35:00+08:00</updated>
+    <id>http://chrishyx.github.com/blog/2013/02/06/db2-install</id>
+    <content type="html"><![CDATA[<p>曾经遇到一个项目指定使用DB2作为数据库，为此曾经尝试过在ubuntu、centos、windows下安装DB2，以及在线备份等。可惜长时间不用现在也都忘的七七八八了。不过，DB2这种数据库，忘了也罢，哈哈。。。</p>
+
+<h2>ubuntu下安装</h2>
+
+<p>很多人说一定要以root用户，否则不能启动控制中心。我不理解什么意思是sudo su - root，还是直接sudo就可以，反正我两种方法都没有试成功。
+那就直接sudo ./db2_setup吧，一步步安装下来。</p>
+
+<p>不要开启Ubuntu的特效，否则无法显示图形界面。</p>
+
+<p>至于打开控制中心，可以这样做：
+在一个shell运行xhost+
+然后在另一个shell用实例用户登录，再export DISPALY=:0.0，就可以打开db2cc了。</p>
+
+<p>启动的时候需要先以dasusr1用户启动db2admin，db2admin start。
+再以db2inst1用户启动db2，db2start。</p>
+
+<p>安装完成之后默认情况下貌似会有密码的问题</p>
+
+<p>将/etc/pam.d/common-password文件中下面这行：</p>
+
+<p><code>
+password success=1 default=ignore pam_unix.so obscure sha512
+</code></p>
+
+<p>替换成：</p>
+
+<p><code>
+password success=1 default=ignore pam_unix.so obscure md5
+</code>
+在SHELL中运行passwd命令更改密码。</p>
+
+<p>因为ubuntu操作系统对密码采取了不同的HASH算法，很可能HASH后的密码串长度超过了DB2支持的最长密码长度。 所以将sha512的HASH算法改为sha256或者md5算法。</p>
+
+<h2>windows7下安装</h2>
+
+<p>以管理员权限运行安装程序，否则会出错，安装不成功。
+安装完成后将用户添加到DB2ADMNS和DB2USER用户组，否则启动的时候会出错。</p>
 ]]></content>
   </entry>
   

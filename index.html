@@ -9,7 +9,12 @@
   <meta name="author" content="yaxin">
 
   
-  <meta name="description" content="DB2 中LONG VARCHAR 与VARCHAR 数据类型都用来存储长文本，但是它们之间的用法有很大不同。VARCHAR 与普通数据类型一样，要使用到bufferpool，在创建表时受制于最大的bufferpool page size，而LONG VARCHAR 则与LOB数据一样， &hellip;">
+  <meta name="description" content="很早之前就听说过google开源的IOC框架，轻量级、效率高，却一直没关注过（因为貌似用的人也不多）。这次因为看58同城开源的argo是采用guice的，所以决定先了解一下guice。 先看一个wiki上的例子，main函数是这样的 1
+2
+3
+4
+5
+public static void &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -64,6 +69,298 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/23/introduce-to-guice/">Introduce to Guice</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-23T22:54:00+08:00" pubdate data-updated="true">Mar 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>很早之前就听说过google开源的IOC框架，轻量级、效率高，却一直没关注过（因为貌似用的人也不多）。这次因为看58同城开源的argo是采用guice的，所以决定先了解一下guice。</p>
+
+<p>先看一个wiki上的例子，main函数是这样的</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Injector</span> <span class="n">injector</span> <span class="o">=</span> <span class="n">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="k">new</span> <span class="n">BillingModule</span><span class="o">());</span>
+</span><span class='line'>    <span class="n">RealBillingService</span> <span class="n">billingService</span> <span class="o">=</span> <span class="n">injector</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">RealBillingService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Injector是一个提供对bean factory访问的借口。从BillingModule的命名可以看出，Guice建议代码应该是模块化的，配置也应该是模块化的。Guice必然是支持模块化的，所以Guice的接口是</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="n">Injector</span> <span class="nf">createInjector</span><span class="o">(</span><span class="n">Module</span><span class="o">...</span> <span class="n">modules</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么module的实现就应该是Guice指明接口和实现类对应关系的地方了。wiki上例子中的BillingModule是这样的</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">BillingModule</span> <span class="kd">extends</span> <span class="n">AbstractModule</span><span class="o">{</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">configure</span><span class="o">(){</span>
+</span><span class='line'>        <span class="n">bind</span><span class="o">(</span><span class="n">TransactionLog</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">DatabaseTransactionLog</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">bind</span><span class="o">(</span><span class="n">CrediCardProcessor</span><span class="o">.</span><span class="na">class</span><span class="o">)</span><span class="n">to</span><span class="o">(</span><span class="n">PaypalCreditCardProcessor</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Module类在configure方法中指明了接口和实现类的对应。这儿的设计有点借鉴objective c的味道，只是objective c中，bind xxx to xxx是一个函数，这是两个，如果只写bind没有to是没有语法错误的，不知道会不会有语意错？或者可以autowired？另外，这里还有一个in scope的概念，//TODO
+业务类的实现</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">class</span> <span class="nc">RealBillingService</span> <span class="kd">implements</span> <span class="n">BillingService</span><span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">CreditCardProcessor</span> <span class="n">processor</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">final</span> <span class="n">TransactionLog</span> <span class="n">transactionLog</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Inject</span>
+</span><span class='line'>    <span class="n">RealBillingService</span><span class="o">(</span><span class="n">CreditCardProcessor</span> <span class="n">processor</span><span class="o">,</span> <span class="n">TransactionLog</span> <span class="n">transactionLog</span><span class="o">){</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">processor</span> <span class="o">=</span> <span class="n">processor</span><span class="o">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">transactionLog</span> <span class="o">=</span> <span class="n">transactionLog</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/21/be-lazy-with-clojure/">Be Lazy With Clojure</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-21T15:35:00+08:00" pubdate data-updated="true">Mar 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">stack-consuming-fibo</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">cond</span>
+</span><span class='line'>   <span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">0</span>
+</span><span class='line'>   <span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">1</span>
+</span><span class='line'>   <span class="ss">:else</span> <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">stack-consuming-fibo</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">))</span>
+</span><span class='line'>            <span class="p">(</span><span class="nf">stack-consuming-fibo</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">tail-fibo</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">letfn</span> <span class="p">[(</span><span class="nf">fib</span>
+</span><span class='line'>            <span class="p">[</span><span class="nv">current</span> <span class="nb">next </span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>            <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span>
+</span><span class='line'>              <span class="nv">current</span>
+</span><span class='line'>              <span class="p">(</span><span class="nf">fib</span> <span class="nb">next </span><span class="p">(</span><span class="nb">+ </span><span class="nv">current</span> <span class="nv">next</span><span class="p">)</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">))))]</span>
+</span><span class='line'>    <span class="p">(</span><span class="nf">fib</span> <span class="mi">0</span><span class="nv">N</span> <span class="mi">1</span><span class="nv">N</span> <span class="nv">n</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">recur-fibo</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nf">letfn</span> <span class="p">[(</span><span class="nf">fib</span>
+</span><span class='line'>          <span class="p">[</span><span class="nv">current</span> <span class="nb">next </span><span class="nv">n</span><span class="p">]</span>
+</span><span class='line'>          <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">n</span><span class="p">)</span>
+</span><span class='line'>            <span class="nv">current</span>
+</span><span class='line'>            <span class="p">(</span><span class="nf">recur</span> <span class="nb">next </span><span class="p">(</span><span class="nb">+ </span><span class="nv">current</span> <span class="nv">next</span><span class="p">)</span> <span class="p">(</span><span class="nb">dec </span><span class="nv">n</span><span class="p">))))]</span>
+</span><span class='line'>    <span class="p">(</span><span class="nf">fib</span> <span class="mi">0</span><span class="nv">N</span> <span class="mi">1</span><span class="nv">N</span> <span class="nv">n</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">lazy-seq-fibo</span>
+</span><span class='line'>  <span class="p">([]</span>
+</span><span class='line'>     <span class="p">(</span><span class="nb">concat </span><span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span> <span class="p">(</span><span class="nf">lazy-seq-fibo</span> <span class="mi">0</span><span class="nv">N</span> <span class="mi">1</span><span class="nv">N</span><span class="p">)))</span>
+</span><span class='line'>  <span class="p">([</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
+</span><span class='line'>     <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">n</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)]</span>
+</span><span class='line'>       <span class="p">(</span><span class="nf">lazy-seq</span>
+</span><span class='line'>        <span class="p">(</span><span class="nb">cons </span><span class="nv">n</span> <span class="p">(</span><span class="nf">lazy-seq-fibo</span> <span class="nv">b</span> <span class="nv">n</span><span class="p">))))))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='clojure'><span class='line'><span class="p">(</span><span class="kd">defn </span><span class="nv">fibo</span> <span class="p">[]</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">map first </span><span class="p">(</span><span class="nb">iterate </span><span class="p">(</span><span class="k">fn </span><span class="p">[[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]]</span> <span class="p">[</span><span class="nv">b</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)])</span> <span class="p">[</span><span class="mi">0</span><span class="nv">N</span> <span class="mi">1</span><span class="nv">N</span><span class="p">])))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/27/emacs/">Emacs</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-27T11:07:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>prelude</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/27/clojure-develop/">Clojure Develop</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-27T00:00:00+08:00" pubdate data-updated="true">Feb 27<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -312,55 +609,6 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/02/05/eclipse-shortcuts/">Eclipse Shortcuts</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-02-05T23:56:00+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>来自网络转载，留下经常看看，eclipse依然是我使用最多的IDE，只是eclipse越来越慢，让人愈发的失望。</p>
-
-<p>Ctrl+1 快速修复(最经典的快捷键,就不用多说了)</p>
-
-<p>Ctrl+D: 删除当前行</p>
-
-<p>Ctrl+Alt+↓ 复制当前行到下一行(复制增加)</p>
-
-<p>Ctrl+Alt+↑ 复制当前行到上一行(复制增加)</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/02/05/eclipse-shortcuts/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/">Ubuntu下内核更新以后virtualbox的重配置</a></h1>
     
     
@@ -460,23 +708,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/03/23/introduce-to-guice/">introduce to guice</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/03/21/be-lazy-with-clojure/">Be lazy with clojure</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/27/emacs/">emacs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/02/27/clojure-develop/">Clojure Develop</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/06/long-varchar-in-db2/">long varchar in DB2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/06/db2-install/">db2 install</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/06/shi-yong-iframeshi-xian-download/">使用iframe实现download</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/05/eclipse-shortcuts/">eclipse shortcuts</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/05/ubuntuxia-nei-he-geng-xin-yi-hou-virtualboxde-zhong-pei-zhi/">ubuntu下内核更新以后virtualbox的重配置</a>
       </li>
     
   </ul>

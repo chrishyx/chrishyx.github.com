@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: clojure | Where am I]]></title>
+  <link href="http://chrishyx.github.com/blog/categories/clojure/atom.xml" rel="self"/>
+  <link href="http://chrishyx.github.com/"/>
+  <updated>2013-03-24T22:05:13+08:00</updated>
+  <id>http://chrishyx.github.com/</id>
+  <author>
+    <name><![CDATA[yaxin]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Be lazy with clojure]]></title>
+    <link href="http://chrishyx.github.com/blog/2013/03/21/be-lazy-with-clojure/"/>
+    <updated>2013-03-21T15:35:00+08:00</updated>
+    <id>http://chrishyx.github.com/blog/2013/03/21/be-lazy-with-clojure</id>
+    <content type="html"><![CDATA[<p>```clojure
+(defn stack-consuming-fibo [n]
+  (cond
+   (= n 0) 0
+   (= n 1) 1
+   :else (+ (stack-consuming-fibo (- n 1))</p>
+
+<pre><code>        (stack-consuming-fibo (- n 2)))))
+</code></pre>
+
+<p>```</p>
+
+<p>```clojure
+(defn tail-fibo [n]
+  (letfn [(fib</p>
+
+<pre><code>        [current next n]
+        (if (zero? n)
+          current
+          (fib next (+ current next) (dec n))))]
+(fib 0N 1N n)))
+</code></pre>
+
+<p>```</p>
+
+<p>```clojure
+(defn recur-fibo [n]
+  (letfn [(fib</p>
+
+<pre><code>      [current next n]
+      (if (zero? n)
+        current
+        (recur next (+ current next) (dec n))))]
+(fib 0N 1N n)))
+</code></pre>
+
+<p>```</p>
+
+<p>```clojure
+(defn lazy-seq-fibo
+  ([]</p>
+
+<pre><code> (concat [0 1] (lazy-seq-fibo 0N 1N)))
+</code></pre>
+
+<p>  ([a b]</p>
+
+<pre><code> (let [n (+ a b)]
+   (lazy-seq
+    (cons n (lazy-seq-fibo b n))))))
+</code></pre>
+
+<p>```</p>
+
+<p><code>clojure
+(defn fibo []
+  (map first (iterate (fn [[a b]] [b (+ a b)]) [0N 1N])))
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>
